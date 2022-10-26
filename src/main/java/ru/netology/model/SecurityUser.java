@@ -1,4 +1,4 @@
-package ru.netology.services;
+package ru.netology.model;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

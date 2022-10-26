@@ -1,2 +1,9 @@
-package ru.netology.dto;public class AuthRequest {
+package ru.netology.dto;
+
+import lombok.Data;
+
+@Data
+public class AuthRequest {
+    private String username;
+    private String password;
 }
