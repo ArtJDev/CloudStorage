@@ -20,13 +20,10 @@ public class JwtTokenUtils {
     @Value("${jwt.signingKey}")
     private String signingKey;
 
-    private final SecretKey key = Keys.hmacShaKeyFor(signingKey.getBytes(StandardCharsets.UTF_8));
-
-
-    public String generateToken (Authentication authentication) {
+    public String generateToken(Authentication authentication) {
         SecurityUser securityUser = (SecurityUser) authentication.getPrincipal();
         Instant now = Instant.now();
-//        SecretKey key = Keys.hmacShaKeyFor(signingKey.getBytes(StandardCharsets.UTF_8));
+        SecretKey key = Keys.hmacShaKeyFor(signingKey.getBytes(StandardCharsets.UTF_8));
         return Jwts.builder()
                 .setSubject(securityUser.getUsername())
                 .setIssuedAt(Date.from(now))
@@ -35,8 +32,8 @@ public class JwtTokenUtils {
                 .compact();
     }
 
-    public Boolean validateToken (String token) {
-//        SecretKey key = Keys.hmacShaKeyFor(signingKey.getBytes(StandardCharsets.UTF_8));
+    public Boolean validateToken(String token) {
+        SecretKey key = Keys.hmacShaKeyFor(signingKey.getBytes(StandardCharsets.UTF_8));
         try {
             Jwts.parserBuilder()
                     .setSigningKey(key)
@@ -51,7 +48,7 @@ public class JwtTokenUtils {
     }
 
     public String getUsernameFromToken(String token) {
-        //        SecretKey key = Keys.hmacShaKeyFor(signingKey.getBytes(StandardCharsets.UTF_8));
+        SecretKey key = Keys.hmacShaKeyFor(signingKey.getBytes(StandardCharsets.UTF_8));
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject();
     }
 

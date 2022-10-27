@@ -12,6 +12,9 @@ import ru.netology.dto.AuthRequest;
 import ru.netology.repositories.UserRepository;
 import ru.netology.security.JwtTokenUtils;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 public class AuthService {
 
@@ -20,6 +23,8 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
 
     private final JwtTokenUtils jwtTokenUtils;
+
+    private Map<String, String> tokenStore = new HashMap<>();
 
     public AuthService(AuthenticationManager authenticationManager, UserRepository userRepository, PasswordEncoder passwordEncoder, JwtTokenUtils jwtTokenUtils) {
         this.authenticationManager = authenticationManager;
@@ -32,13 +37,15 @@ public class AuthService {
         try {
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            return jwtTokenUtils.generateToken(authentication);
+            String token = jwtTokenUtils.generateToken(authentication);
+            tokenStore.put(token, authRequest.getUsername());
+            return token;
         } catch (AuthenticationException ex) {
             throw new BadCredentialsException("Bad credentials");
         }
     }
 
     public void logoutUser (String token) {
-
+        tokenStore.remove(token);
     }
 }
