@@ -45,7 +45,7 @@ public class AuthService {
         }
     }
 
-    public void logoutUser (String token) {
-        tokenStore.remove(token);
+    public void logoutUser (String authToken) {
+        tokenStore.remove(authToken);
     }
 }

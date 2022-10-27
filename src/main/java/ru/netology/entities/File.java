@@ -19,6 +19,7 @@ public class File {
     private Long size;
     @Lob
     private byte[] content;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "username", referencedColumnName = "username")
     protected User user;
 }
