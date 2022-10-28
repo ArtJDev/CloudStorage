@@ -7,5 +7,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class FileResponse {
     private final String filename;
-    private final String size;
+    private final Long size;
 }

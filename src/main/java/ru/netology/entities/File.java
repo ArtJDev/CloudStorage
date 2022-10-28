@@ -16,10 +16,18 @@ public class File {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String filename;
+
+    private String type;
     private Long size;
     @Lob
     private byte[] content;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "username", referencedColumnName = "username")
-    protected User user;
+    private String owner;
+
+    public File(String filename, String type, Long size, byte[] content, String owner) {
+        this.filename = filename;
+        this.type = type;
+        this.size = size;
+        this.content = content;
+        this.owner = owner;
+    }
 }
