@@ -37,6 +37,14 @@ public class StorageController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
+    @PutMapping("/file")
+    public ResponseEntity<?> editFileName(@RequestHeader("auth-token") String authToken,
+                                          @RequestParam("filename") String filename,
+                                          @RequestBody Map<String, String> fileNameRequest) {
+        storageService.renameFile(authToken, filename, fileNameRequest.get("filename"));
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
     @DeleteMapping("/file")
     public ResponseEntity<?> deleteFile(@RequestHeader("auth-token") String authToken,
                                         @RequestParam("filename") String filename) {
@@ -45,21 +53,12 @@ public class StorageController {
     }
 
     @GetMapping("/file")
-    public ResponseEntity<?> downloadFile(@RequestHeader("auth-token") String authToken,
+    public ResponseEntity<byte[]> downloadFile(@RequestHeader("auth-token") String authToken,
                                           @RequestParam("filename") String filename) {
         File file = storageService.downloadFile(authToken, filename);
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(file.getType()))
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
                 .body(file.getContent());
-    }
-
-    @PostMapping("/file")
-    public ResponseEntity<?> editFileName(@RequestHeader("auth-token") String authToken,
-                                          @RequestParam("filename") String filename,
-                                          @RequestBody Map<String, String> fileNameRequest) {   //Че за хуйня в этой мапе?
-        fileNameRequest.forEach((k, v) -> System.out.println("key: " + k + " value: " + v));
-        storageService.renameFile(authToken, filename, fileNameRequest.get("filename"));
-        return ResponseEntity.ok(HttpStatus.OK);
     }
 }
