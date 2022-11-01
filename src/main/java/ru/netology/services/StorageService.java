@@ -1,6 +1,7 @@
 package ru.netology.services;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import ru.netology.dto.FileResponse;
 import ru.netology.entities.File;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class StorageService {
     private final FileRepository fileRepository;
     private final JwtTokenUtils jwtTokenUtils;
@@ -20,9 +22,8 @@ public class StorageService {
         this.fileRepository = fileRepository;
         this.jwtTokenUtils = jwtTokenUtils;
     }
-
     public List<FileResponse> getFiles(String authToken, int limit) {
-        String owner = jwtTokenUtils.getUsernameFromToken(authToken);
+        String owner = jwtTokenUtils.getUsernameFromToken(authToken.substring(7));
         List<File> fileList = fileRepository.findAllByOwner(owner);
         return fileList.stream()
                 .sorted()
@@ -32,23 +33,22 @@ public class StorageService {
     }
 
     public void uploadFile(String authToken, String filename, MultipartFile file) throws IOException {
-        String owner = jwtTokenUtils.getUsernameFromToken(authToken);
+        String owner = jwtTokenUtils.getUsernameFromToken(authToken.substring(7));
         fileRepository.save(new File(filename, file.getContentType(), file.getSize(), file.getBytes(), owner));
     }
 
     public void deleteFile(String authToken, String filename) {
-        String owner = jwtTokenUtils.getUsernameFromToken(authToken);
+        String owner = jwtTokenUtils.getUsernameFromToken(authToken.substring(7));
         fileRepository.removeByFilenameAndOwner(filename, owner);
     }
 
     public File downloadFile(String authToken, String filename) {
-        String owner = jwtTokenUtils.getUsernameFromToken(authToken);
+        String owner = jwtTokenUtils.getUsernameFromToken(authToken.substring(7));
         return fileRepository.findByFilenameAndOwner(filename, owner);
     }
 
     public void renameFile(String authToken, String filename, String newFilename){
-        String owner = jwtTokenUtils.getUsernameFromToken(authToken);
+        String owner = jwtTokenUtils.getUsernameFromToken(authToken.substring(7));
         fileRepository.renameFile(filename, newFilename, owner);
     }
-
 }

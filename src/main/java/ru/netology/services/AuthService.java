@@ -35,10 +35,10 @@ public class AuthService {
 
     public String loginUser (AuthRequest authRequest) {
         try {
-            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getLogin(), authRequest.getPassword()));
             SecurityContextHolder.getContext().setAuthentication(authentication);
             String token = jwtTokenUtils.generateToken(authentication);
-            tokenStore.put(token, authRequest.getUsername());
+            tokenStore.put(token, authRequest.getLogin());
             return token;
         } catch (AuthenticationException ex) {
             throw new BadCredentialsException("Bad credentials");
