@@ -18,3 +18,5 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                 .allowCredentials(true);
     }
 }
+
+//ToDo Проверить необходимость этого класса

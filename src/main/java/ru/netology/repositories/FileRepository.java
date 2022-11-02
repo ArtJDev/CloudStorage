@@ -8,11 +8,12 @@ import org.springframework.stereotype.Repository;
 import ru.netology.entities.File;
 
 import java.util.List;
+
 @Repository
 public interface FileRepository extends JpaRepository<File, Long> {
 
     @Query(value = "select f from File f where f.owner = :owner")
-    List<File> findAllByOwner (@Param("owner")String owner);
+    List<File> findAllByOwner(@Param("owner") String owner);
 
     File findByFilenameAndOwner(String filename, String owner);
 

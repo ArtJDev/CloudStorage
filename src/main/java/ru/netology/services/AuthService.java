@@ -17,13 +17,10 @@ import java.util.Map;
 
 @Service
 public class AuthService {
-
     private final AuthenticationManager authenticationManager;
-    private final UserRepository userRepository;
+    private final UserRepository userRepository;    //ToDo проверить необходимость этих бинов в этом классе
     private final PasswordEncoder passwordEncoder;
-
     private final JwtTokenUtils jwtTokenUtils;
-
     private Map<String, String> tokenStore = new HashMap<>();
 
     public AuthService(AuthenticationManager authenticationManager, UserRepository userRepository, PasswordEncoder passwordEncoder, JwtTokenUtils jwtTokenUtils) {

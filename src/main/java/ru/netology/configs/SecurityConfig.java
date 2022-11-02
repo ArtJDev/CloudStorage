@@ -3,9 +3,7 @@ package ru.netology.configs;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -26,7 +24,7 @@ import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)      //ToDo методы не используются, необходимость аннотации?
 public class SecurityConfig {
     private final UserDetailsServiceImpl userDetailsService;
     private final JwtEntryPoint jwtEntryPoint;
@@ -43,19 +41,11 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    //    @Bean
-//    public AuthenticationManager authManager() { //UserDetailsService или UserDetailsServiceImpl???
-//        var authProvider = new DaoAuthenticationProvider();
-//        authProvider.setUserDetailsService(userDetailsService);
-//        return new ProviderManager(authProvider);
-//    }
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-
         authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
-
         return authProvider;
     }
 
@@ -67,7 +57,8 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable();
-
+        http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
+        http.authenticationProvider(authenticationProvider());
         http
                 .authorizeRequests().mvcMatchers("/login").permitAll()
                 .anyRequest().authenticated()
@@ -86,8 +77,6 @@ public class SecurityConfig {
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authenticationProvider(authenticationProvider());
-        http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -103,5 +92,4 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-
 }

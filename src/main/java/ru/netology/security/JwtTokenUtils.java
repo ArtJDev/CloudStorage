@@ -6,11 +6,9 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import ru.netology.model.SecurityUser;
 
 import javax.crypto.SecretKey;
-import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -18,7 +16,6 @@ import java.util.Date;
 
 @Component
 public class JwtTokenUtils {
-
     @Value("${jwt.signingKey}")
     private String signingKey;
 

@@ -8,7 +8,6 @@ import java.util.Collection;
 import java.util.List;
 
 public class SecurityUser implements UserDetails {
-
     private final User user;
 
     public SecurityUser(User user) {
@@ -27,7 +26,7 @@ public class SecurityUser implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(() -> user.getAuthority());
+        return List.of(user::getAuthority);
     }
 
     @Override

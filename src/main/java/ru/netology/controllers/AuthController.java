@@ -10,7 +10,6 @@ import ru.netology.services.AuthService;
 @RestController
 @RequestMapping("/")
 public class AuthController {
-
     private final AuthService authService;
 
     public AuthController(AuthService authService) {

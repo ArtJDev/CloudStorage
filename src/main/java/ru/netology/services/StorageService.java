@@ -22,6 +22,7 @@ public class StorageService {
         this.fileRepository = fileRepository;
         this.jwtTokenUtils = jwtTokenUtils;
     }
+
     public List<FileResponse> getFiles(String authToken, int limit) {
         String owner = jwtTokenUtils.getUsernameFromToken(authToken.substring(7));
         List<File> fileList = fileRepository.findAllByOwner(owner);

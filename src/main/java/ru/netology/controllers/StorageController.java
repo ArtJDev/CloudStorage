@@ -38,9 +38,9 @@ public class StorageController {
     }
 
     @PutMapping("/file")
-    public ResponseEntity<?> editFileName(@RequestHeader("auth-token") String authToken,
-                                          @RequestParam("filename") String filename,
-                                          @RequestBody Map<String, String> fileNameRequest) {
+    public ResponseEntity<?> renameFile(@RequestHeader("auth-token") String authToken,
+                                        @RequestParam("filename") String filename,
+                                        @RequestBody Map<String, String> fileNameRequest) {
         storageService.renameFile(authToken, filename, fileNameRequest.get("filename"));
         return ResponseEntity.ok(HttpStatus.OK);
     }
@@ -54,7 +54,7 @@ public class StorageController {
 
     @GetMapping("/file")
     public ResponseEntity<byte[]> downloadFile(@RequestHeader("auth-token") String authToken,
-                                          @RequestParam("filename") String filename) {
+                                               @RequestParam("filename") String filename) {
         File file = storageService.downloadFile(authToken, filename);
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(file.getType()))
