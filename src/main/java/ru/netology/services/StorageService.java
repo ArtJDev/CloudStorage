@@ -9,7 +9,9 @@ import ru.netology.repositories.FileRepository;
 import ru.netology.security.JwtTokenUtils;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,11 +27,9 @@ public class StorageService {
 
     public List<FileResponse> getFiles(String authToken, int limit) {
         String owner = jwtTokenUtils.getUsernameFromToken(authToken.substring(7));
-        List<File> fileList = fileRepository.findAllByOwner(owner);
-        return fileList.stream()
-                .sorted()
+        Optional<List<File>> fileList = fileRepository.findAllByOwner(owner);
+        return fileList.get().stream().map(fr -> new FileResponse(fr.getFilename(), fr.getSize()))
                 .limit(limit)
-                .map(fr -> new FileResponse(fr.getFilename(), fr.getSize()))
                 .collect(Collectors.toList());
     }
 

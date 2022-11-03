@@ -17,8 +17,6 @@ public class CloudStorageApplication {
 
     @Bean
     CommandLineRunner commandLineRunner(UserRepository users, PasswordEncoder encoder) {
-        return args -> {
-            users.save(new User("user", encoder.encode("password"), "ROLE_USER"));
-        };
+        return args -> users.save(new User("user", encoder.encode("password"), "ROLE_USER"));
     }
 }

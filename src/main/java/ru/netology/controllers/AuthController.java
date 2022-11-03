@@ -23,6 +23,11 @@ public class AuthController {
                 new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
+    @GetMapping("login")
+    public ResponseEntity<?> login() {
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
     @PostMapping("/logout")
     public ResponseEntity<?> logout(@RequestHeader("auth-token") String token) {
         authService.logoutUser(token);
