@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -24,7 +23,6 @@ import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)      //ToDo методы не используются, необходимость аннотации?
 public class SecurityConfig {
     private final UserDetailsServiceImpl userDetailsService;
     private final JwtEntryPoint jwtEntryPoint;
@@ -62,13 +60,11 @@ public class SecurityConfig {
         http
                 .authorizeRequests().mvcMatchers("/login").permitAll()
                 .anyRequest().authenticated()
-                .and()
 
+                .and()
                 .logout()
-                .logoutUrl("/logout")
                 .deleteCookies("JSESSIONID")
                 .clearAuthentication(true)
-                .logoutSuccessUrl("/login")
 
                 .and()
                 .exceptionHandling()
