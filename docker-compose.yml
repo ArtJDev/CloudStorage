@@ -5,18 +5,18 @@ services:
       context: .
     ports:
       - "9090:9090"
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/postgres
     depends_on:
-      - db
+      - database
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/postgres
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: artpql
 
-  db:
+  database:
     image: postgres
     ports:
       - "5432:5432"
-    volumes:
-      - data:/var/lib/postgresql/data
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=artpql
-      - POSTGRES_DB=postgres
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: artpql
