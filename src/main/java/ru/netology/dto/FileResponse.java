@@ -2,10 +2,12 @@ package ru.netology.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class FileResponse {
-    private final String filename;
-    private final Long size;
+    private String filename;
+    private Long size;
 }

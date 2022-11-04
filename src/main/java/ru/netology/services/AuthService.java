@@ -6,10 +6,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.netology.dto.AuthRequest;
-import ru.netology.repositories.UserRepository;
 import ru.netology.security.JwtTokenUtils;
 
 import java.util.HashMap;
@@ -18,19 +16,15 @@ import java.util.Map;
 @Service
 public class AuthService {
     private final AuthenticationManager authenticationManager;
-    private final UserRepository userRepository;    //ToDo проверить необходимость этих бинов в этом классе
-    private final PasswordEncoder passwordEncoder;
     private final JwtTokenUtils jwtTokenUtils;
-    private Map<String, String> tokenStore = new HashMap<>();
+    private final Map<String, String> tokenStore = new HashMap<>();
 
-    public AuthService(AuthenticationManager authenticationManager, UserRepository userRepository, PasswordEncoder passwordEncoder, JwtTokenUtils jwtTokenUtils) {
+    public AuthService(AuthenticationManager authenticationManager, JwtTokenUtils jwtTokenUtils) {
         this.authenticationManager = authenticationManager;
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
         this.jwtTokenUtils = jwtTokenUtils;
     }
 
-    public String loginUser (AuthRequest authRequest) {
+    public String loginUser(AuthRequest authRequest) {
         try {
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getLogin(), authRequest.getPassword()));
             SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -42,7 +36,7 @@ public class AuthService {
         }
     }
 
-    public void logoutUser (String authToken) {
+    public void logoutUser(String authToken) {
         tokenStore.remove(authToken);
     }
 }

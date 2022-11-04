@@ -9,7 +9,6 @@ import ru.netology.repositories.FileRepository;
 import ru.netology.security.JwtTokenUtils;
 
 import java.io.IOException;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -48,7 +47,7 @@ public class StorageService {
         return fileRepository.findByFilenameAndOwner(filename, owner);
     }
 
-    public void renameFile(String authToken, String filename, String newFilename){
+    public void renameFile(String authToken, String filename, String newFilename) {
         String owner = jwtTokenUtils.getUsernameFromToken(authToken.substring(7));
         fileRepository.renameFile(filename, newFilename, owner);
     }

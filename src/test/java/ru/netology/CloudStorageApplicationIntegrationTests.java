@@ -6,11 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.netology.dto.AuthRequest;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -31,8 +29,8 @@ class CloudStorageApplicationIntegrationTests {
     void loginUserUnauthenticated() throws Exception {
         AuthRequest authRequest = new AuthRequest(BAD_LOGIN, PASSWORD);
         mvc.perform(post(LOGIN_PATH)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(authRequest)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(authRequest)))
                 .andExpect(status().isUnauthorized());
     }
 
@@ -40,8 +38,8 @@ class CloudStorageApplicationIntegrationTests {
     void loginUserAuthenticated() throws Exception {
         AuthRequest authRequest = new AuthRequest(LOGIN, PASSWORD);
         mvc.perform(post(LOGIN_PATH)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(authRequest)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(authRequest)))
                 .andExpect(status().isOk());
     }
 
@@ -49,8 +47,8 @@ class CloudStorageApplicationIntegrationTests {
     void logoutUserTest() throws Exception {
         AuthRequest authRequest = new AuthRequest(LOGIN, PASSWORD);
         mvc.perform(post(LOGOUT_PATH)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(authRequest)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(authRequest)))
                 .andExpect(status().is3xxRedirection());
     }
 }
